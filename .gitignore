@@ -1,0 +1,4 @@
+.envrc
+application.log
+build/**
+gradle/**
