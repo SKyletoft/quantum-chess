@@ -1,0 +1,15 @@
+root = true
+
+[*.kt]
+indent_size = 8
+indent_style = tab
+tab_width = 8
+insert_final_newline = true
+charset = utf-8
+
+[*.kts]
+indent_size = 8
+indent_style = tab
+tab_width = 8
+insert_final_newline = true
+charset = utf-8

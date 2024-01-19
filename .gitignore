@@ -2,3 +2,6 @@
 application.log
 build/**
 gradle/**
+.gradle/**
+.idea/**
+.vscode/**
