@@ -7,4 +7,7 @@ run-intel:
 run:
 	./gradlew run
 
+clean:
+	./gradlew clean
+
 .PHONY: build run
