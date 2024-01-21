@@ -1,11 +1,6 @@
 import org.openrndr.application
-import org.openrndr.draw.Drawer
 import org.openrndr.draw.loadImage
 import org.openrndr.drawImage
-import org.openrndr.math.Vector2
-import org.openrndr.shape.Rectangle
-import org.openrndr.color.ColorRGBa as ColourRGBa
-import org.openrndr.draw.ColorBuffer as ColourBuffer
 
 fun main() =
 	application {

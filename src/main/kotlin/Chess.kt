@@ -1,25 +1,3 @@
-import org.openrndr.application
-import org.openrndr.draw.Drawer
-import org.openrndr.draw.loadImage
-import org.openrndr.drawImage
-import org.openrndr.math.Vector2
-import org.openrndr.shape.Rectangle
-import org.openrndr.color.ColorRGBa as ColourRGBa
-import org.openrndr.draw.ColorBuffer as ColourBuffer
-
-fun getSprite(
-	x: Int,
-	y: Int,
-): Rectangle {
-	val spriteSize = 334.0
-	return Rectangle(
-		x * spriteSize,
-		y * spriteSize,
-		spriteSize,
-		spriteSize,
-	)
-}
-
 enum class PieceType {
 	King,
 	Queen,
@@ -94,37 +72,7 @@ enum class Colour {
 	Black,
 }
 
-data class Piece(val type: PieceType, val colour: Colour, val identifier: Int) {
-	companion object {
-		val whiteKing = getSprite(0, 0)
-		val whiteQueen = getSprite(1, 0)
-		val whiteBishop = getSprite(2, 0)
-		val whiteKnight = getSprite(3, 0)
-		val whiteRook = getSprite(4, 0)
-		val whitePawn = getSprite(5, 0)
-		val blackKing = getSprite(0, 1)
-		val blackQueen = getSprite(1, 1)
-		val blackBishop = getSprite(2, 1)
-		val blackKnight = getSprite(3, 1)
-		val blackRook = getSprite(4, 1)
-		val blackPawn = getSprite(5, 1)
-	}
-
-	public fun sprite(): Rectangle {
-		if (this.colour == Colour.White && this.type == PieceType.King) return whiteKing
-		if (this.colour == Colour.White && this.type == PieceType.Queen) return whiteQueen
-		if (this.colour == Colour.White && this.type == PieceType.Bishop) return whiteBishop
-		if (this.colour == Colour.White && this.type == PieceType.Knight) return whiteKnight
-		if (this.colour == Colour.White && this.type == PieceType.Rook) return whiteRook
-		if (this.colour == Colour.White && this.type == PieceType.Pawn) return whitePawn
-		if (this.colour == Colour.Black && this.type == PieceType.King) return blackKing
-		if (this.colour == Colour.Black && this.type == PieceType.Queen) return blackQueen
-		if (this.colour == Colour.Black && this.type == PieceType.Bishop) return blackBishop
-		if (this.colour == Colour.Black && this.type == PieceType.Knight) return blackKnight
-		if (this.colour == Colour.Black && this.type == PieceType.Rook) return blackRook
-		return blackPawn
-	}
-}
+data class Piece(val type: PieceType, val colour: Colour, val identifier: Int)
 
 fun inBounds(
 	x: Int,
