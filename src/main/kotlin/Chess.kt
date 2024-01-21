@@ -12,7 +12,7 @@ enum class PieceType {
 			arrayOf(
 				Pair(1, 0),
 				Pair(-1, 0),
-				Pair(0, -1),
+				Pair(0, 1),
 				Pair(0, -1),
 			)
 				.flatMap { (x, y) -> (1..8).map { i -> Pair(x * i, y * i) } }
@@ -167,3 +167,5 @@ data class Board(var pieces: Array<Piece?>) {
 		this.pieces[y * 8 + x] = p
 	}
 }
+
+// fun move(board: Board, from: )

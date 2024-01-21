@@ -4,7 +4,19 @@ import org.openrndr.shape.Rectangle
 import org.openrndr.color.ColorRGBa as ColourRGBa
 import org.openrndr.draw.ColorBuffer as ColourBuffer
 
-val drawChessBoard: Drawer.() -> Unit = {
+fun screenToMap(v: Vector2): Coord =
+	Pair(
+		7 - (v.y / 80).toInt(),
+		(v.x / 80).toInt(),
+	)
+
+fun mapToScreen(c: Coord): Vector2 =
+	Vector2(
+		80.0 * c.second.toDouble(),
+		80.0 * (7 - c.first).toDouble(),
+	)
+
+fun Drawer.drawChessBoard() {
 	this.clear(ColourRGBa.fromHex(0xECD3B9))
 	this.fill = ColourRGBa.fromHex(0xA16F5A)
 	val squares =
@@ -81,17 +93,17 @@ val blackRook = getSprite(4, 1)
 val blackPawn = getSprite(5, 1)
 
 public fun Piece.sprite(): Rectangle {
-	if (this.colour == Colour.White && this.type == PieceType.King) return whiteKing
-	if (this.colour == Colour.White && this.type == PieceType.Queen) return whiteQueen
+	if (this.colour == Colour.White && this.type == PieceType.King)   return whiteKing
+	if (this.colour == Colour.White && this.type == PieceType.Queen)  return whiteQueen
 	if (this.colour == Colour.White && this.type == PieceType.Bishop) return whiteBishop
 	if (this.colour == Colour.White && this.type == PieceType.Knight) return whiteKnight
-	if (this.colour == Colour.White && this.type == PieceType.Rook) return whiteRook
-	if (this.colour == Colour.White && this.type == PieceType.Pawn) return whitePawn
-	if (this.colour == Colour.Black && this.type == PieceType.King) return blackKing
-	if (this.colour == Colour.Black && this.type == PieceType.Queen) return blackQueen
+	if (this.colour == Colour.White && this.type == PieceType.Rook)   return whiteRook
+	if (this.colour == Colour.White && this.type == PieceType.Pawn)   return whitePawn
+	if (this.colour == Colour.Black && this.type == PieceType.King)   return blackKing
+	if (this.colour == Colour.Black && this.type == PieceType.Queen)  return blackQueen
 	if (this.colour == Colour.Black && this.type == PieceType.Bishop) return blackBishop
 	if (this.colour == Colour.Black && this.type == PieceType.Knight) return blackKnight
-	if (this.colour == Colour.Black && this.type == PieceType.Rook) return blackRook
+	if (this.colour == Colour.Black && this.type == PieceType.Rook)   return blackRook
 	return blackPawn
 }
 
@@ -109,7 +121,7 @@ fun Drawer.drawBoardState(
 			this.image(
 				spriteSheet,
 				piece.sprite(),
-				Rectangle(80.0 * y.toDouble(), 80.0 * (7 - x).toDouble(), w, h),
+				Rectangle(mapToScreen(Pair(x, y)), w, h),
 			)
 		}
 	}
