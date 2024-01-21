@@ -5,6 +5,7 @@ import org.openrndr.drawImage
 import org.openrndr.math.Vector2
 import org.openrndr.shape.Rectangle
 import org.openrndr.color.ColorRGBa as ColourRGBa
+import org.openrndr.draw.ColorBuffer as ColourBuffer
 
 val drawChessBoard: Drawer.() -> Unit = {
 	this.clear(ColourRGBa.fromHex(0xECD3B9))
@@ -160,31 +161,18 @@ data class Piece(val type: PieceType, val colour: Colour, val identifier: Int) {
 	}
 
 	public fun sprite(): Rectangle {
-		if (this.colour == Colour.White && this.type == PieceType.King) {
-			return whiteKing
-		} else if (this.colour == Colour.White && this.type == PieceType.Queen) {
-			return whiteQueen
-		} else if (this.colour == Colour.White && this.type == PieceType.Bishop) {
-			return whiteBishop
-		} else if (this.colour == Colour.White && this.type == PieceType.Knight) {
-			return whiteKnight
-		} else if (this.colour == Colour.White && this.type == PieceType.Rook) {
-			return whiteRook
-		} else if (this.colour == Colour.White && this.type == PieceType.Pawn) {
-			return whitePawn
-		} else if (this.colour == Colour.Black && this.type == PieceType.King) {
-			return blackKing
-		} else if (this.colour == Colour.Black && this.type == PieceType.Queen) {
-			return blackQueen
-		} else if (this.colour == Colour.Black && this.type == PieceType.Bishop) {
-			return blackBishop
-		} else if (this.colour == Colour.Black && this.type == PieceType.Knight) {
-			return blackKnight
-		} else if (this.colour == Colour.Black && this.type == PieceType.Rook) {
-			return blackRook
-		} else {
-			return blackPawn
-		}
+		if (this.colour == Colour.White && this.type == PieceType.King) return whiteKing
+		if (this.colour == Colour.White && this.type == PieceType.Queen) return whiteQueen
+		if (this.colour == Colour.White && this.type == PieceType.Bishop) return whiteBishop
+		if (this.colour == Colour.White && this.type == PieceType.Knight) return whiteKnight
+		if (this.colour == Colour.White && this.type == PieceType.Rook) return whiteRook
+		if (this.colour == Colour.White && this.type == PieceType.Pawn) return whitePawn
+		if (this.colour == Colour.Black && this.type == PieceType.King) return blackKing
+		if (this.colour == Colour.Black && this.type == PieceType.Queen) return blackQueen
+		if (this.colour == Colour.Black && this.type == PieceType.Bishop) return blackBishop
+		if (this.colour == Colour.Black && this.type == PieceType.Knight) return blackKnight
+		if (this.colour == Colour.Black && this.type == PieceType.Rook) return blackRook
+		return blackPawn
 	}
 }
 
@@ -282,13 +270,25 @@ data class Board(var pieces: Array<Piece?>) {
 	}
 }
 
-// fun drawBoardState(board: Board): Drawer.() -> Board -> Unit = {
-//	for (x in 0..<8) {
-//		for (y in 0..<8) {
+fun Drawer.drawBoardState(
+	board: Board,
+	spriteSheet: ColourBuffer,
+	w: Double,
+	h: Double,
+) {
+	for (x in 0..<8) {
+		for (y in 0..<8) {
+			val piece = board[x, y]
+			if (piece == null) continue
 
-//		}
-//	}
-// }
+			this.image(
+				spriteSheet,
+				piece.sprite(),
+				Rectangle(80.0 * y.toDouble(), 80.0 * (7 - x).toDouble(), w, h),
+			)
+		}
+	}
+}
 
 fun main() =
 	application {
@@ -307,9 +307,7 @@ fun main() =
 				val h = drawer.context.height.toDouble() / 8.0
 				drawer.image(board)
 
-				drawer.image(pieces, whiteKing, Rectangle(0.0, 0.0, w, h))
-				drawer.image(pieces, whiteQueen, Rectangle(160.0, 0.0, w, h))
-				drawer.image(pieces, blackKing, Rectangle(80.0, 0.0, w, h))
+				drawer.drawBoardState(gameState, pieces, w, h)
 			}
 		}
 	}
