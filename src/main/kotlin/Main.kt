@@ -2,13 +2,14 @@ import org.openrndr.MouseButton
 import org.openrndr.application
 import org.openrndr.draw.loadImage
 import org.openrndr.drawImage
-import org.openrndr.math.Vector2
 import kotlin.math.floor
 import org.openrndr.color.ColorRGBa as ColourRGBa
 
 typealias Coord = Pair<Int, Int>
 
-fun main() =
+fun main() = chess()
+
+fun chess() =
 	application {
 		configure {
 			width = 640
@@ -22,19 +23,30 @@ fun main() =
 			val h = drawer.context.height.toDouble() / 8.0
 
 			val gameState = Board.startingPosition.copy()
-			var highlighted: Pair<Pair<Int, Int>, Piece>? = null
+			var highlighted: Pair<Coord, Piece>? = null
+			var attackable: List<Coord> = listOf()
 
 			mouse.buttonDown.listen {
 				when (it.button) {
 					MouseButton.LEFT -> {
 						val cand = screenToMap(mouse.position)
 						println(cand)
-						highlighted =
-							if (gameState[cand] != null) {
-								Pair(cand, gameState[cand]!!)
-							} else {
-								null
+
+						when {
+							attackable.contains(cand) -> {
+								move(gameState, highlighted!!.first, cand)
+								highlighted = null
+								attackable = listOf()
 							}
+							gameState[cand] != null -> {
+								highlighted = Pair(cand, gameState[cand]!!)
+								attackable = moves(gameState, cand)
+							}
+							else -> {
+								highlighted == null
+								attackable = listOf()
+							}
+						}
 
 						println(highlighted)
 					}
@@ -53,15 +65,9 @@ fun main() =
 
 				drawer.fill = ColourRGBa.GREEN.copy(alpha = 0.3)
 				if (highlighted != null) {
-					val (pos, piece) = highlighted!!
-					for ((dx, dy) in piece.type.moves()) {
-						val hlCorner =
-							mapToScreen(
-								Pair(
-									pos.first + dx,
-									pos.second + dy,
-								),
-							)
+					val (pos, _) = highlighted!!
+					for ((dx, dy) in attackable) {
+						val hlCorner = mapToScreen(Pair(dx, dy))
 						drawer.rectangle(hlCorner, 80.0)
 					}
 				}

@@ -93,17 +93,18 @@ val blackRook = getSprite(4, 1)
 val blackPawn = getSprite(5, 1)
 
 public fun Piece.sprite(): Rectangle {
-	if (this.colour == Colour.White && this.type == PieceType.King)   return whiteKing
-	if (this.colour == Colour.White && this.type == PieceType.Queen)  return whiteQueen
-	if (this.colour == Colour.White && this.type == PieceType.Bishop) return whiteBishop
-	if (this.colour == Colour.White && this.type == PieceType.Knight) return whiteKnight
-	if (this.colour == Colour.White && this.type == PieceType.Rook)   return whiteRook
-	if (this.colour == Colour.White && this.type == PieceType.Pawn)   return whitePawn
-	if (this.colour == Colour.Black && this.type == PieceType.King)   return blackKing
-	if (this.colour == Colour.Black && this.type == PieceType.Queen)  return blackQueen
-	if (this.colour == Colour.Black && this.type == PieceType.Bishop) return blackBishop
-	if (this.colour == Colour.Black && this.type == PieceType.Knight) return blackKnight
-	if (this.colour == Colour.Black && this.type == PieceType.Rook)   return blackRook
+	if (this.colour == Colour.White && this.type == PieceType.King)      return whiteKing
+	if (this.colour == Colour.White && this.type == PieceType.Queen)     return whiteQueen
+	if (this.colour == Colour.White && this.type == PieceType.Bishop)    return whiteBishop
+	if (this.colour == Colour.White && this.type == PieceType.Knight)    return whiteKnight
+	if (this.colour == Colour.White && this.type == PieceType.Rook)      return whiteRook
+	if (this.colour == Colour.White && this.type == PieceType.Pawn)      return whitePawn
+	if (this.colour == Colour.White && this.type == PieceType.FirstPawn) return whitePawn
+	if (this.colour == Colour.Black && this.type == PieceType.King)      return blackKing
+	if (this.colour == Colour.Black && this.type == PieceType.Queen)     return blackQueen
+	if (this.colour == Colour.Black && this.type == PieceType.Bishop)    return blackBishop
+	if (this.colour == Colour.Black && this.type == PieceType.Knight)    return blackKnight
+	if (this.colour == Colour.Black && this.type == PieceType.Rook)      return blackRook
 	return blackPawn
 }
 
