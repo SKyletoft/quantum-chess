@@ -1,13 +1,13 @@
 build:
-	./gradlew build
+	./gradlew build --warning-mode=none
 
 run-intel:
-	nixGLIntel ./gradlew run
+	nixGLIntel ./gradlew run --warning-mode=none
 
 run:
-	./gradlew run
+	./gradlew run --warning-mode=none
 
 clean:
-	./gradlew clean
+	./gradlew clean --warning-mode=none
 
 .PHONY: build run
