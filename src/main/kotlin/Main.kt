@@ -23,6 +23,7 @@ fun chess() =
 			val h = drawer.context.height.toDouble() / 8.0
 
 			val gameState = Board.startingPosition.copy()
+			var onScreen = false
 			var highlighted: Pair<Coord, Piece>? = null
 			var attackable: List<Coord> = listOf()
 
@@ -54,14 +55,23 @@ fun chess() =
 				}
 			}
 
+			mouse.exited.listen {
+				onScreen = false
+			}
+			mouse.entered.listen {
+				onScreen = true
+			}
+
 			extend {
 				val corner = mouse.position.map { x: Double -> floor(x / 80.0) * 80.0 }
 				drawer.strokeWeight = -1.0
 
 				drawer.image(board)
 
-				drawer.fill = ColourRGBa.MAGENTA.copy(alpha = 0.3)
-				drawer.rectangle(corner, 80.0)
+				if (onScreen) {
+					drawer.fill = ColourRGBa.MAGENTA.copy(alpha = 0.3)
+					drawer.rectangle(corner, 80.0)
+				}
 
 				drawer.fill = ColourRGBa.GREEN.copy(alpha = 0.3)
 				if (highlighted != null) {
