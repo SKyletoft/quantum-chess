@@ -72,6 +72,14 @@ enum class PieceType {
 enum class Colour {
 	White,
 	Black,
+	;
+
+	operator fun not(): Colour {
+		when (this) {
+			Colour.White -> return Colour.Black
+			Colour.Black -> return Colour.White
+		}
+	}
 }
 
 data class Piece(val type: PieceType, val colour: Colour, val identifier: Int)
@@ -83,11 +91,11 @@ fun inBounds(
 	y: Int,
 ): Boolean = 0 <= x && x < 8 && 0 <= y && y < 8
 
-data class Board(var pieces: Array<Piece?>) {
+data class Board(var pieces: Array<Piece?>, var turn: Colour) {
 	companion object {
 		val startingPosition: Board =
 			run {
-				var board = Board(arrayOfNulls(64))
+				var board = Board(arrayOfNulls(64), Colour.White)
 
 				board[0, 0] = Piece(PieceType.Rook, Colour.White, 0)
 				board[0, 1] = Piece(PieceType.Knight, Colour.White, 0)
@@ -187,6 +195,9 @@ fun moves(
 	if (piece == null) {
 		throw Exception("Moving non-existant piece")
 	}
+	if (piece.colour != board.turn) {
+		return listOf()
+	}
 	return piece.type
 		.moves()
 		.map { dir ->
@@ -201,11 +212,31 @@ fun moves(
 							hitEnemy = true
 							true
 						}
+						board[it] == piece && !hitEnemy -> {
+							hitEnemy = true
+							true
+						}
 						else -> false
 					}
 				}
 		}
 		.flatMap { it }
+}
+
+fun removeAll(
+	board: Board,
+	piece: Piece?,
+) {
+	if (piece == null) {
+		return
+	}
+	for (y in 0..<8) {
+		for (x in 0..<8) {
+			if (board[x, y] == piece) {
+				board[x, y] = null
+			}
+		}
+	}
 }
 
 fun move(
@@ -217,7 +248,11 @@ fun move(
 	if (piece == null) {
 		throw Exception("Moving non-existant piece")
 	}
-	board[from] = null
+	if (board[to] != null) {
+		removeAll(board, board[to])
+		removeAll(board, board[from])
+	}
+	// board[from] = null
 	board[to] = piece
 }
 
@@ -231,8 +266,12 @@ fun moveTwo(
 	if (piece == null) {
 		throw Exception("Moving non-existant piece")
 	}
+	if (board[to1] != null || board[to2] != null) {
+		removeAll(board, board[to1])
+		removeAll(board, board[to2])
+		removeAll(board, board[from])
+	}
 	board[from] = null
-
 	board[to1] = piece
 	board[to2] = piece
 }

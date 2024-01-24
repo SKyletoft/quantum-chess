@@ -35,6 +35,7 @@ fun chess() =
 
 						when {
 							attackable.contains(cand) -> {
+								// gameState.turn = !gameState.turn
 								move(gameState, highlighted!!.first, cand)
 								highlighted = null
 								attackable = listOf()
