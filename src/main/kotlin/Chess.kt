@@ -200,7 +200,7 @@ fun moves(
 	}
 	return piece.type
 		.moves()
-		.map { dir ->
+		.flatMap { dir ->
 			var hitEnemy = false
 			dir
 				.map { it.add(from) }
@@ -220,7 +220,6 @@ fun moves(
 					}
 				}
 		}
-		.flatMap { it }
 }
 
 fun removeAll(
